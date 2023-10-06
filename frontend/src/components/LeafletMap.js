@@ -1,19 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { MapContainer, TileLayer, Marker, Popup, Map } from "react-leaflet";
-import { HeatmapLayer } from "react-leaflet-heatmap-layer-v3";
+// import { HeatmapLayer } from "react-leaflet-heatmap-layer-v3";
+
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
+import TextField from "@mui/material/TextField";
 import DialogContentText from "@mui/material/DialogContentText";
+import RecordRTC from 'recordrtc';
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import FormControl from "@mui/material/FormControl";
+import { styled } from '@mui/material/styles';
+import MenuItem from "@mui/material/MenuItem";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import "leaflet/dist/leaflet.css";
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import axios from "axios";
-// import HeatmapLayer from "react-leaflet-heatmap-layer";
 import { icon } from "leaflet";
-// import HeatmapLayer from "react-leaflet-heatmap-layer";
 
 const myLocationicon = icon({
   iconUrl: "man_pin.png",
@@ -38,9 +45,20 @@ const thunderstormIcon = icon({
 
 function LeafletMap({ lat, lng }) {
   const [coordinates, setCoordinates] = useState([]);
-  const [isDialogOpen, setDialogOpen] = useState(false);
   const [imdNowcastAlerts, setImdNowcastAlerts] = useState([]);
+  const [isRecording, setIsRecording] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const imageInputRef = useRef(null);
   const [alerts, setAlerts] = useState([]);
+  const [isDialogOpen, setDialogOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    latitude: lat,
+    longitude: lng,
+    alertName: '',
+    alertDescription: '',
+    alertSeverity: '',
+  });
+
   useEffect(() => {
     setCoordinates([lat, lng]);
 
@@ -55,12 +73,85 @@ function LeafletMap({ lat, lng }) {
       });
   }, [lat, lng]);
 
+  const toggleRecording = () => {
+    if (!isRecording) {
+      // Start recording
+      navigator.mediaDevices
+        .getUserMedia({ video: true })
+        .then((stream) => {
+          const recorder = RecordRTC(stream, {
+            type: 'video',
+          });
+  
+          recorder.startRecording();
+          setIsRecording(true);
+  
+          recorder.ondataavailable = (event) => {
+            if (event.data) {
+              const blob = event.data;
+              // Handle the recorded video blob as needed (e.g., upload it)
+              // For now, you can display a video preview
+              const videoPreview = document.getElementById('video-preview');
+              videoPreview.src = URL.createObjectURL(blob);
+            }
+          };
+  
+          recorder.onstop = () => {
+            setIsRecording(false);
+            stream.getTracks().forEach((track) => track.stop());
+          };
+  
+          // Stop recording after a set duration (e.g., 10 seconds)
+          setTimeout(() => {
+            recorder.stopRecording(() => {
+              // Access the recorded blob here
+              const blob = recorder.getBlob();
+              // Handle the recorded video blob as needed (e.g., upload it)
+              // For now, you can display a video preview
+              const videoPreview = document.getElementById('video-preview');
+              videoPreview.src = URL.createObjectURL(blob);
+            });
+          }, 10000); // Stop recording after 10 seconds
+        })
+        .catch((error) => {
+          console.error('Error accessing camera:', error);
+        });
+    } else {
+      // Stop recording
+      // Recording will also stop automatically after a set duration
+      setIsRecording(false);
+    }
+  };
+
   const handleFabClick = () => {
     setDialogOpen(true);
   };
 
   const handleClose = () => {
     setDialogOpen(false);
+  };
+
+  const handleOpenDialog = () => {
+    setDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+  };
+
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedImage(file);
+    }
   };
 
   useEffect(() => {
@@ -148,15 +239,72 @@ function LeafletMap({ lat, lng }) {
       >
         <AddIcon sx={{}} aria-label="add" />
       </Fab>
-      <Dialog open={isDialogOpen} onClose={handleClose}>
+      <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
         <DialogTitle>Dialog Title</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            This is a dummy dialog box content.
-          </DialogContentText>
+          <TextField
+            name="latitude"
+            label="Latitude"
+            fullWidth
+            margin="dense"
+            value={formData.latitude}
+            onChange={handleFormChange}
+          />
+          <TextField
+            name="longitude"
+            label="Longitude"
+            fullWidth
+            margin="dense"
+            value={formData.longitude}
+            onChange={handleFormChange}
+          />
+          <TextField
+            name="alertName"
+            label="Alert Name"
+            fullWidth
+            margin="dense"
+            value={formData.alertName}
+            onChange={handleFormChange}
+          />
+          {/* The Image upload */}
+          {/* <video id="video-preview" autoPlay muted style={{ width: '100%', maxHeight: '300px' }} />
+          <Button
+            variant="contained"
+            size="large"
+            onClick={toggleRecording}
+            disabled={isRecording}
+          >
+            {isRecording ? 'Stop Recording' : 'Start Recording'}
+          </Button>
+
+          {/* Display a preview of the selected image */}
+          {/* {selectedImage && (
+            <img
+              src={URL.createObjectURL(selectedImage)}
+              alt="Selected Event"
+              style={{ maxWidth: '100%', marginTop: '20px' }}
+            />
+          )}  */}
+          <FormControl fullWidth margin="dense">
+            <InputLabel>Alert Severity</InputLabel>
+            <Select
+              name="alertSeverity"
+              value={formData.alertSeverity}
+              onChange={handleFormChange}
+            >
+              <MenuItem value="Green alert">Green alert</MenuItem>
+              <MenuItem value="Orange alert">Orange alert</MenuItem>
+              <MenuItem value="Red alert">Red alert</MenuItem>
+            </Select>
+          </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Close</Button>
+          <Button onClick={handleCloseDialog} color="primary">
+            Close
+          </Button>
+          <Button onClick={handleCloseDialog} color="primary">
+            Save
+          </Button>
         </DialogActions>
       </Dialog>
 </>

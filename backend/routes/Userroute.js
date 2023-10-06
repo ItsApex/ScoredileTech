@@ -1,22 +1,43 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/users"); // Import the User model
-const accountSid = 'ACb46a3608f2e4fb4c0b944ca2529a46b8'
-const authToken = '28609e3888a95d10e95bf8c65c1c32c8'
-
+const accountSid = 'ACb46a3608f2e4fb4c0b944ca2529a46b8';
+const authToken = 'a8b10e8acbac965c182251c4b232c1b8';
 const client = require('twilio')(accountSid, authToken);
 
-
-
-router.post("/sendmessage",async(req,res)=>{
-  client.message.create({
-    from: "+12564742235",
-    to : "+918591537048",
-    body : "there is a calamity run aryan bro run"
+router.post("/sendmessage", async (req, res) => {
+  const numbers = ['+919324284054','+918591537048','+917977255640']
+try{
+  const {message} = req.body
+  numbers.forEach((number)=>{
+    client.messages
+    .create({
+        body: message,
+        from: '+12564742235',
+        to: number
+    })
   })
-  .then((res)=>{console.log('message has been sent')})
-  .catch((err)=>{console.log('there was an error')})
-})
+
+  console.log('All messages sent successfully.');
+    res.status(200).json({ message: "Messages sent successfully" });
+}
+catch(error){
+  res.status(500).json({ error: "Message sending failed", error });
+}
+
+
+  
+    // .then(message => console.log(message.sid))
+    // .then((message) => {
+    //   console.log('Message has been sent:');
+    //   res.status(200).json({ message: "Message sent successfully" });
+    // })
+    // // .done()
+    // .catch((err) => {
+    //   console.error('There was an error:', err);
+    //   res.status(500).json({ error: "Message sending failed",err });
+    // });
+});
 
 router.post("/register", async (req, res) => {
     try {
