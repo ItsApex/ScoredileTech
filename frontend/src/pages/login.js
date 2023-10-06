@@ -18,11 +18,21 @@ function Loginpage() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Implement your login logic here, e.g., send data to a server
     console.log("Username:", formData.username);
     console.log("Password:", formData.password);
+    try {
+      console.log('try block')
+      const response = await axios.post("http://localhost:3001/users/login", formData);
+      navigate("/login");
+      console.log("Registration successful:", response.data);
+    } catch (error) {
+      // Handle registration errors (e.g., validation errors, server errors)
+      console.error("Error registering user:", error);
+    }
+
   };
 
   return (

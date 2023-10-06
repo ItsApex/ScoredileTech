@@ -46,7 +46,7 @@ const RegistrationPage = () => {
 
     try {
       console.log('try block')
-      const response = await axios.post("/users/register", formData);
+      const response = await axios.post("http://localhost:3001/users/register", formData);
       navigate("/login");
       console.log("Registration successful:", response.data);
     } catch (error) {

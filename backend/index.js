@@ -16,10 +16,20 @@ const db = async () => {
   console.log("db");
   try {
     const connect = await mongoose.connect(process.env.mongoDB_URL);
+    // const connect = await mongoose.connect(process.env.mongoDB_URL);
     console.log(`connected successfully ${connect.connection.host}`);
   } catch (error) {
     console.log(`error is ${error}`);
   }
+  // mongoose
+  //   .connect(process.env.mongoDB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+  //   .then(() => {
+  //     console.log("Connected to MongoDB");
+  //   })
+  //   .catch((error) => {
+  //     console.error("Error connecting to MongoDB:", error);
+  //     // setTimeout(connectWithRetry, 5000); // Retry after 5 seconds
+  //   });
 };
 
 app.get("/", (req, res) => {
