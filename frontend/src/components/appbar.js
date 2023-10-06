@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -12,27 +12,44 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import {Dialog,DialogContent,DialogActions ,DialogTitle} from '@mui/material/Button';
 
-const pages = ['Products', 'Pricing', 'Blog','Alert'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+
+const pages = ['Products', 'Pricing', 'Blog', 'Alert'];
+const settings = ['Profile', 'Account', 'Dashboard', 'Logout', 'Alert'];
 
 function ResponsiveAppBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
   };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handlePageClick = (page) => {
+    console.log(`Clicked on page: ${page}`);
+
+    if(page == "alert"){
+
+    }
+    handleCloseNavMenu();
+  };
+
+  const handleSettingClick = (setting) => {
+    console.log(`Clicked on setting: ${setting}`);
+    handleCloseUserMenu();
   };
 
   return (
@@ -88,7 +105,7 @@ function ResponsiveAppBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem key={page} onClick={() => handlePageClick(page)}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
@@ -117,7 +134,7 @@ function ResponsiveAppBar() {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={handleCloseNavMenu}
+                onClick={() => handlePageClick(page)}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 {page}
@@ -148,13 +165,25 @@ function ResponsiveAppBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem key={setting} onClick={() => handleSettingClick(setting)}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
         </Toolbar>
+    <Dialog open={open} onClose={handleClose}>
+    <DialogTitle>Caution Alert</DialogTitle>
+    <DialogContent>
+      This is the content of the caution.
+      {/* You can add more content here */}
+    </DialogContent>
+    <DialogActions>
+      <Button onClick={handleClose} color="primary">
+        Close
+      </Button>
+    </DialogActions>
+  </Dialog>
       </Container>
     </AppBar>
   );
