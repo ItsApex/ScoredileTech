@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, Map } from "react-leaflet";
 import { HeatmapLayer } from "react-leaflet-heatmap-layer-v3";
 import Dialog from "@mui/material/Dialog";
@@ -10,25 +10,42 @@ import Button from "@mui/material/Button";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import "leaflet/dist/leaflet.css";
+import axios from "axios";
 // import HeatmapLayer from "react-leaflet-heatmap-layer";
 import { icon } from "leaflet";
 // import HeatmapLayer from "react-leaflet-heatmap-layer";
 
 const myLocationicon = icon({
-  iconUrl: "man_pin.png", // Replace with the path to your custom icon image
-  iconSize: [32, 32], // Size of the icon
-  iconAnchor: [16, 32], // Point of the icon which will correspond to marker's location
-  popupAnchor: [0, -32], // Point from which the popup should open relative to the iconAnchor
+  iconUrl: "man_pin.png",
+  iconSize: [32, 32],
+  iconAnchor: [16, 32],
+  popupAnchor: [0, -32],
 });
-const heatmapData = [{ lat: 19.10746, lng: 72.8375, intensity: 100 }];
+
+const disasterIcon = icon({
+  iconUrl: "man_pin.png",
+  iconSize: [32, 32],
+  iconAnchor: [16, 32],
+  popupAnchor: [0, -32],
+});
 
 function LeafletMap({ lat, lng }) {
   const [coordinates, setCoordinates] = useState([]);
   const [isDialogOpen, setDialogOpen] = useState(false);
+  const [alerts, setAlerts] = useState([]);
+  useEffect(() => {
+    setCoordinates([lat, lng]);
 
-  const addCoordinate = (lat, lng) => {
-    setCoordinates([...coordinates, [lat, lng]]);
-  };
+    // Fetch alerts data using Axios
+    axios
+      .get("https://sachet.ndma.gov.in/cap_public_website/FetchAllAlertDetails")
+      .then((response) => {
+        setAlerts(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching alerts data:", error);
+      });
+  }, [lat, lng]);
 
   const handleFabClick = () => {
     setDialogOpen(true);
@@ -37,6 +54,20 @@ function LeafletMap({ lat, lng }) {
   const handleClose = () => {
     setDialogOpen(false);
   };
+
+  useEffect(() => {
+    setCoordinates([lat, lng]);
+
+    // Fetch alerts data using Axios
+    axios
+      .get("https://sachet.ndma.gov.in/cap_public_website/FetchAllAlertDetails")
+      .then((response) => {
+        setAlerts(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching alerts data:", error);
+      });
+  }, [lat, lng]);
 
   return (
     <>

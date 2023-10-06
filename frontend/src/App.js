@@ -17,7 +17,8 @@ import { useTheme } from "@emotion/react";
 // import MenuIcon from '@mui/icons-material/Menu';
 
 function App() {
-  const [currentLocation, setCurrentLocation] = useState({lat: 0,lng: 0,});
+  const [currentLocation, setCurrentLocation] = useState({ lat: 0, lng: 0 });
+  const [locationFetched, setLocationFetched] = useState(false);
 
   useState(() => {
     // Use the Geolocation API to get current location
@@ -27,6 +28,7 @@ function App() {
         lat: latitude,
         lng: longitude,
       });
+      setLocationFetched(true);
     });
   }, []);
   
@@ -38,7 +40,9 @@ function App() {
         <Routes>
           <Route exact path="/register" element={<RegistrationPage />}></Route>
           <Route exact path="/login" element={<Loginpage />}></Route>
+          {locationFetched && (
           <Route exact path="/map" element={<LeafletMap lat={currentLocation.lat} lng={currentLocation.lng} />}></Route>
+          )}
         </Routes>
       </Router>
     </>
