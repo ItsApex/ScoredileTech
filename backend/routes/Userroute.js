@@ -33,9 +33,11 @@ router.post("/register", async (req, res) => {
   router.post("/login", async (req, res) => {
     try {
       const { username, password } = req.body;
+      console.log(username)
+      console.log(password)
   
       // Find the user by username and password (you should hash and salt passwords in a production app)
-      const user = await User.findOne({ username, password });
+      const user = await User.findOne({ name : username, password : password });
   
       if (!user) {
         return res.status(401).json({ message: "Invalid username or password" });

@@ -1,55 +1,75 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Map } from 'react-leaflet';
-import {  HeatmapLayer } from 'react-leaflet-heatmap-layer-v3';
 import 'leaflet/dist/leaflet.css';
-// import HeatmapLayer from "react-leaflet-heatmap-layer";
 import { icon } from 'leaflet';
-// import HeatmapLayer from "react-leaflet-heatmap-layer";
+import axios from 'axios';
 
 const myLocationicon = icon({
-  iconUrl: 'man_pin.png', // Replace with the path to your custom icon image
-  iconSize: [32, 32], // Size of the icon
-  iconAnchor: [16, 32], // Point of the icon which will correspond to marker's location
-  popupAnchor: [0, -32], // Point from which the popup should open relative to the iconAnchor
+  
+  iconUrl: 'man_pin.png',
+  iconSize: [32, 32],
+  iconAnchor: [16, 32],
+  popupAnchor: [0, -32],
 });
-const heatmapData = [
-  { lat: 19.107460, lng: 72.837500, intensity: 100 },
-];
+
+const disasterIcon = icon({
+  iconUrl: 'man_pin.png',
+  iconSize: [32, 32],
+  iconAnchor: [16, 32],
+  popupAnchor: [0, -32],
+})
 
 function LeafletMap({ lat, lng }) {
-  const [coordinates, setCoordinates] = useState([]);
+  const [coordinates, setCoordinates] = useState([lat, lng]);
+  const [alerts, setAlerts] = useState([]);
 
-  const addCoordinate = (lat, lng) => {
-    setCoordinates([...coordinates, [lat, lng]]);
-  };
+  useEffect(() => {
+    setCoordinates([lat, lng]);
+
+    // Fetch alerts data using Axios
+    axios.get('https://sachet.ndma.gov.in/cap_public_website/FetchAllAlertDetails')
+      .then((response) => {
+        setAlerts(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching alerts data:', error);
+      });
+  }, [lat, lng]);
 
   return (
     <MapContainer
-      center={[lat, lng]}
-      zoom={13}
+      center={coordinates}
+      zoom={14}
       style={{ height: '100vh', width: '100%' }}
     >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
-      <Marker position={[lat, lng]} icon={myLocationicon}>
+      <Marker position={coordinates} icon={myLocationicon}>
         <Popup>Your Current Location</Popup>
       </Marker>
 
-      {/* HeatmapLayer */}
-      {/* <HeatmapLayer data={heatmapData} /> */}
-      {/* <HeatmapLayer
-        points={coordinates}
-        blur={20}
-        radius={20}
-        max={1.0}
-        gradient={{
-          0.1: "blue",
-          0.5: "lime",
-          0.8: "red",
-        }}
-      /> */}
+      {/* Display markers for alert locations */}
+      {alerts.map((alert, index) => (
+        <Marker
+          icon={disasterIcon}
+          key={index}
+          position={[
+            parseFloat(alert.centroid.split(',')[1]),
+            parseFloat(alert.centroid.split(',')[0]),
+          ]}
+        >
+          <Popup>
+            <strong>{alert.disaster_type}</strong>
+            <br />
+            Severity: {alert.severity}
+            <br />
+            Location: {alert.area_description}
+          </Popup>
+        </Marker>
+      ))}
+
     </MapContainer>
   );
 }

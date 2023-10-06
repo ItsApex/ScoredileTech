@@ -4,12 +4,18 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { Paper } from "@mui/material";
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
+// import Snackbar from "@mui/material/Snackbar";
+// import MuiAlert from "@mui/material/Alert";
 
 function Loginpage() {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,19 +25,25 @@ function Loginpage() {
     });
   };
 
+  const navigate = useNavigate()
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Implement your login logic here, e.g., send data to a server
     console.log("Username:", formData.username);
     console.log("Password:", formData.password);
     try {
-      console.log('try block')
-      const response = await axios.post("http://localhost:3001/users/login", formData);
-      navigate("/login");
-      console.log("Registration successful:", response.data);
+      
+      const response = await axios.post("http://localhost:3001/users/login", {
+        'username' : formData.username,
+        'password' : formData.password
+      });
+
+      navigate("/map");
+      console.log("logging successful:", response.data);
     } catch (error) {
       // Handle registration errors (e.g., validation errors, server errors)
-      console.error("Error registering user:", error);
+      console.error("Error logining user:", error);
     }
 
   };
