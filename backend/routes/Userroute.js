@@ -6,7 +6,7 @@ const User = require("../models/users"); // Import the User model
 router.post("/register", async (req, res) => {
     try {
       // Extract user data from the request body
-      console.log('regiter field')
+      console.log('register field')
       const { name, email, password, phoneNumber } = req.body;
   
       // Create a new user document using the User model
