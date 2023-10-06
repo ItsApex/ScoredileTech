@@ -43,7 +43,7 @@ const thunderstormIcon = icon({
   popupAnchor: [0, -32],
 });
 
-function LeafletMap({ lat, lng }) {
+function LeafletMap({ lat, lng, dialogtxt}) {
   const [coordinates, setCoordinates] = useState([]);
   const [imdNowcastAlerts, setImdNowcastAlerts] = useState([]);
   const [alerts, setAlerts] = useState([]);
@@ -139,7 +139,7 @@ function LeafletMap({ lat, lng }) {
         ))}
       </MapContainer>
       
-      <Sidebar lat={lat} lng={lng}/>
+      <Sidebar lat={lat} lng={lng} dialogtxt={dialogtxt} />
     </>
   );
 }

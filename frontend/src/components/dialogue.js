@@ -59,24 +59,35 @@ function SideBar(props) {
           alignItems: "center",
         }}
       >
-        <Typography variant="h5">Hey this is your sexy side bar</Typography>
+        {props.dialogtxt === "H" ? (
+          <>
+            <Typography variant="h5">Hey this is your sexy side bar</Typography>
 
-        <Button>This is a button </Button>
+            <Button>This is a button</Button>
 
-        <Fab
-          sx={{
-            position: "absolute",
-            bottom: "4%",
-            right: "10%",
-            backgroundColor: "#c9474d",
-            "&:hover": {
-              background: "#e8767c",
-            },
-          }}
-          onClick={handleFabClick}
-        >
-          <AddIcon sx={{}} aria-label="add" />
-        </Fab>
+            <Fab
+              sx={{
+                position: "absolute",
+                bottom: "4%",
+                right: "10%",
+                backgroundColor: "#c9474d",
+                "&:hover": {
+                  background: "#e8767c",
+                },
+              }}
+              onClick={handleFabClick}
+            >
+              <AddIcon sx={{}} aria-label="add" />
+            </Fab>
+          </>
+        ) : props.dialogtxt === "R" ? (
+          // Different content to show when dialogtxt is "R"
+          <>
+            <Typography variant="h5">Another content for R</Typography>
+
+            <Button>Another button</Button>
+          </>
+        ) : null}
       </Paper>
 
       <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
@@ -106,25 +117,6 @@ function SideBar(props) {
             value={formData.alertName}
             onChange={handleFormChange}
           />
-          {/* The Image upload */}
-          {/* <video id="video-preview" autoPlay muted style={{ width: '100%', maxHeight: '300px' }} />
-          <Button
-            variant="contained"
-            size="large"
-            onClick={toggleRecording}
-            disabled={isRecording}
-          >
-            {isRecording ? 'Stop Recording' : 'Start Recording'}
-          </Button>
-
-          {/* Display a preview of the selected image */}
-          {/* {selectedImage && (
-            <img
-              src={URL.createObjectURL(selectedImage)}
-              alt="Selected Event"
-              style={{ maxWidth: '100%', marginTop: '20px' }}
-            />
-          )}  */}
           <FormControl fullWidth margin="dense">
             <InputLabel>Alert Severity</InputLabel>
             <Select

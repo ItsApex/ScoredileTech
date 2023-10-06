@@ -12,6 +12,7 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
+import { Link, Routes, Route, useNavigate } from "react-router-dom";
 import {
   Dialog,
   DialogActions,
@@ -21,12 +22,13 @@ import {
 import { useTheme } from "@emotion/react";
 
 const pages = ["Home", "Reports", "Routes", "Blogs"];
-
 function ResponsiveAppBar() {
   const theme = useTheme();
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [opendialog, setopen] = useState(false);
+  const navigate = useNavigate(); // Access the navigate function
+
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -46,9 +48,14 @@ function ResponsiveAppBar() {
   const handlePageClick = (page) => {
     console.log(`Clicked on page: ${page}`);
 
-    if (page === "alert") {
+    if (page === "Home") {
+      navigate("/home");
     }
     handleCloseNavMenu();
+
+    if (page === "Routes"){
+      navigate("/routes");
+    }
   };
 
   const handleSettingClick = (setting) => {

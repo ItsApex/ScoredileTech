@@ -42,16 +42,10 @@ function App() {
           <Route exact path="/register" element={<RegistrationPage />}></Route>
           <Route exact path="/login" element={<Loginpage />}></Route>
           {locationFetched && (
-            <Route
-              exact
-              path="/map"
-              element={
-                <LeafletMap
-                  lat={currentLocation.lat}
-                  lng={currentLocation.lng}
-                />
-              }
-            ></Route>
+            <Route exact path="/home" element={<LeafletMap lat={currentLocation.lat} lng={currentLocation.lng} dialogtxt="H"/>}></Route>
+          )}
+          {locationFetched && (
+            <Route exact path="/routes" element={<LeafletMap lat={currentLocation.lat} lng={currentLocation.lng} dialogtxt="R"/>}></Route>
           )}
         </Routes>
       </Router>
