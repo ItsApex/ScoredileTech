@@ -3,6 +3,7 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import { Paper } from "@mui/material";
 
 function Loginpage() {
   const [formData, setFormData] = useState({
@@ -36,7 +37,13 @@ function Loginpage() {
         height: "100vh", // This will make the container take up the full viewport height
       }}
     >
-      <div className="login-container">
+      <Paper
+        variant="outlined"
+        sx={{
+          py: 6,
+          px: 5,
+        }}
+      >
         <Typography variant="h4" align="center" gutterBottom>
           Login
         </Typography>
@@ -72,7 +79,7 @@ function Loginpage() {
             Login
           </Button>
         </form>
-      </div>
+      </Paper>
     </Container>
   );
 }
