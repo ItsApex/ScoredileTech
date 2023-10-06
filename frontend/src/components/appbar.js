@@ -12,7 +12,9 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-import {Dialog,DialogContent,DialogActions ,DialogTitle} from '@mui/material/Button';
+import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+
+
 
 
 const pages = ['Products', 'Pricing', 'Blog', 'Alert'];
@@ -21,7 +23,7 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout', 'Alert'];
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
-
+  const [opendialog , setopen ] = useState(false)
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -172,14 +174,14 @@ function ResponsiveAppBar() {
             </Menu>
           </Box>
         </Toolbar>
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={opendialog} >
     <DialogTitle>Caution Alert</DialogTitle>
     <DialogContent>
       This is the content of the caution.
       {/* You can add more content here */}
     </DialogContent>
     <DialogActions>
-      <Button onClick={handleClose} color="primary">
+      <Button onClick={setopen(false) } color="primary">
         Close
       </Button>
     </DialogActions>

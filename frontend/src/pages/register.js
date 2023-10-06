@@ -42,10 +42,10 @@ const RegistrationPage = () => {
     console.log(formData);
     try {
       // Send a POST request to the registration endpoint
-      const response = await axios.post("/users/register", formData);
+      // const response = await axios.post("/users/register", formData);
 
       // Handle a successful registration (you can redirect the user or show a success message)
-      console.log("Registration successful:", response.data);
+      // console.log("Registration successful:", response.data);
     } catch (error) {
       // Handle registration errors (e.g., validation errors, server errors)
       console.error("Error registering user:", error);
