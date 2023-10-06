@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { Paper } from "@mui/material";
+import { Navigate } from "react-router-dom";
 
 function Loginpage() {
   const [formData, setFormData] = useState({
@@ -25,15 +26,18 @@ function Loginpage() {
     console.log("Username:", formData.username);
     console.log("Password:", formData.password);
     try {
-      console.log('try block')
-      const response = await axios.post("http://localhost:3001/users/login", formData);
-      navigate("/login");
+      console.log("try block");
+      const axios = require("axios");
+      const response = await axios.post(
+        "http://localhost:3001/users/login",
+        formData
+      );
+      Navigate("/login");
       console.log("Registration successful:", response.data);
     } catch (error) {
       // Handle registration errors (e.g., validation errors, server errors)
       console.error("Error registering user:", error);
     }
-
   };
 
   return (

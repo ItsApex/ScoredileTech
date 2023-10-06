@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, Map } from "react-leaflet";
-import {  HeatmapLayer } from 'react-leaflet-heatmap-layer-v3';
+import { HeatmapLayer } from "react-leaflet-heatmap-layer-v3";
 import "leaflet/dist/leaflet.css";
 // import HeatmapLayer from "react-leaflet-heatmap-layer";
 import { icon } from "leaflet";
@@ -12,9 +12,7 @@ const myLocationicon = icon({
   iconAnchor: [16, 32], // Point of the icon which will correspond to marker's location
   popupAnchor: [0, -32], // Point from which the popup should open relative to the iconAnchor
 });
-const heatmapData = [
-  { lat: 19.107460, lng: 72.837500, intensity: 100 },
-];
+const heatmapData = [{ lat: 19.10746, lng: 72.8375, intensity: 100 }];
 
 function LeafletMap({ lat, lng }) {
   const [coordinates, setCoordinates] = useState([]);
