@@ -1,7 +1,22 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/users"); // Import the User model
+const accountSid = 'ACb46a3608f2e4fb4c0b944ca2529a46b8'
+const authToken = '28609e3888a95d10e95bf8c65c1c32c8'
 
+const client = require('twilio')(accountSid, authToken);
+
+
+
+router.post("/sendmessage",async(req,res)=>{
+  client.message.create({
+    from: "+12564742235",
+    to : "+918591537048",
+    body : "there is a calamity run aryan bro run"
+  })
+  .then((res)=>{console.log('message has been sent')})
+  .catch((err)=>{console.log('there was an error')})
+})
 
 router.post("/register", async (req, res) => {
     try {

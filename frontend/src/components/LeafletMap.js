@@ -23,7 +23,14 @@ const myLocationicon = icon({
 });
 
 const disasterIcon = icon({
-  iconUrl: "man_pin.png",
+  iconUrl: 'alert_img.png',
+  iconSize: [32, 32],
+  iconAnchor: [16, 32],
+  popupAnchor: [0, -32],
+})
+
+const thunderstormIcon = icon({
+  iconUrl: 'thunderstorm_img.png',
   iconSize: [32, 32],
   iconAnchor: [16, 32],
   popupAnchor: [0, -32],
@@ -32,6 +39,7 @@ const disasterIcon = icon({
 function LeafletMap({ lat, lng }) {
   const [coordinates, setCoordinates] = useState([]);
   const [isDialogOpen, setDialogOpen] = useState(false);
+  const [imdNowcastAlerts, setImdNowcastAlerts] = useState([]);
   const [alerts, setAlerts] = useState([]);
   useEffect(() => {
     setCoordinates([lat, lng]);
@@ -58,7 +66,6 @@ function LeafletMap({ lat, lng }) {
   useEffect(() => {
     setCoordinates([lat, lng]);
 
-    // Fetch alerts data using Axios
     axios
       .get("https://sachet.ndma.gov.in/cap_public_website/FetchAllAlertDetails")
       .then((response) => {
@@ -66,6 +73,22 @@ function LeafletMap({ lat, lng }) {
       })
       .catch((error) => {
         console.error("Error fetching alerts data:", error);
+      });
+    
+      axios.get('https://sachet.ndma.gov.in/cap_public_website/FetchIMDNowcastAlerts')
+      .then((response) => {
+        setImdNowcastAlerts(response.data.nowcastDetails);
+      })
+      .catch((error) => {
+        console.error('Error fetching IMD Nowcast alerts data:', error);
+      });
+    
+      axios.get('https://sachet.ndma.gov.in/cap_public_website/FetchIMDNowcastAlerts')
+      .then((response) => {
+        setImdNowcastAlerts(response.data.nowcastDetails);
+      })
+      .catch((error) => {
+        console.error('Error fetching IMD Nowcast alerts data:', error);
       });
   }, [lat, lng]);
 
@@ -90,21 +113,28 @@ function LeafletMap({ lat, lng }) {
           <Popup>Your Current Location</Popup>
         </Marker>
 
-        {/* HeatmapLayer */}
-        {/* <HeatmapLayer data={heatmapData} /> */}
-        {/* <HeatmapLayer
-        points={coordinates}
-        blur={20}
-        radius={20}
-        max={1.0}
-        gradient={{
-          0.1: "blue",
-          0.5: "lime",
-          0.8: "red",
-        }}
-      /> */}
-      </MapContainer>
-      <Fab
+      {/* Display markers for alert locations */}
+      {alerts.map((alert, index) => (
+        <Marker
+          icon={disasterIcon}
+          key={index}
+          position={[
+            parseFloat(alert.centroid.split(',')[1]),
+            parseFloat(alert.centroid.split(',')[0]),
+          ]}
+        >
+          <Popup>
+            <strong>{alert.disaster_type}</strong>
+            <br />
+            Severity: {alert.severity}
+            <br />
+            Location: {alert.area_description}
+          </Popup>
+        </Marker>
+      ))}
+
+    </MapContainer>
+    <Fab
         sx={{
           position: "absolute",
           bottom: "10%",
@@ -131,7 +161,7 @@ function LeafletMap({ lat, lng }) {
           <Button onClick={handleClose}>Close</Button>
         </DialogActions>
       </Dialog>
-    </>
+</>
   );
 }
 
