@@ -13,7 +13,14 @@ const myLocationicon = icon({
 });
 
 const disasterIcon = icon({
-  iconUrl: 'man_pin.png',
+  iconUrl: 'alert_img.png',
+  iconSize: [32, 32],
+  iconAnchor: [16, 32],
+  popupAnchor: [0, -32],
+})
+
+const thunderstormIcon = icon({
+  iconUrl: 'thunderstorm_img.png',
   iconSize: [32, 32],
   iconAnchor: [16, 32],
   popupAnchor: [0, -32],
@@ -21,18 +28,26 @@ const disasterIcon = icon({
 
 function LeafletMap({ lat, lng }) {
   const [coordinates, setCoordinates] = useState([lat, lng]);
+  const [imdNowcastAlerts, setImdNowcastAlerts] = useState([]);
   const [alerts, setAlerts] = useState([]);
 
   useEffect(() => {
     setCoordinates([lat, lng]);
 
-    // Fetch alerts data using Axios
     axios.get('https://sachet.ndma.gov.in/cap_public_website/FetchAllAlertDetails')
       .then((response) => {
         setAlerts(response.data);
       })
       .catch((error) => {
         console.error('Error fetching alerts data:', error);
+      });
+    
+      axios.get('https://sachet.ndma.gov.in/cap_public_website/FetchIMDNowcastAlerts')
+      .then((response) => {
+        setImdNowcastAlerts(response.data.nowcastDetails);
+      })
+      .catch((error) => {
+        console.error('Error fetching IMD Nowcast alerts data:', error);
       });
   }, [lat, lng]);
 
@@ -50,7 +65,6 @@ function LeafletMap({ lat, lng }) {
         <Popup>Your Current Location</Popup>
       </Marker>
 
-      {/* Display markers for alert locations */}
       {alerts.map((alert, index) => (
         <Marker
           icon={disasterIcon}
@@ -66,6 +80,32 @@ function LeafletMap({ lat, lng }) {
             Severity: {alert.severity}
             <br />
             Location: {alert.area_description}
+            <br />
+            Alert Start: {alert.effective_start_time}
+            <br />
+            Alert End: {alert.effective_end_time}
+          </Popup>
+        </Marker>
+      ))}
+
+      {imdNowcastAlerts.map((alert, index) => (
+        <Marker
+          icon={thunderstormIcon}
+          key={index}
+          position={[alert.location.coordinates[1], alert.location.coordinates[0]]}
+        >
+          <Popup>
+            <strong>IMD Nowcast Alert</strong>
+            <br />
+            Severity: {alert.severity}
+            <br />
+            Location: {alert.area_description}
+            <br />
+            Alert Start: {alert.effective_start_time}
+            <br />
+            Alert End: {alert.effective_end_time}
+            <br />
+            Event Category: {alert.event_category}
           </Popup>
         </Marker>
       ))}
