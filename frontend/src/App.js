@@ -37,7 +37,6 @@ function App() {
     <>
       <Router>
         <ResponsiveAppBar />
-
         <Routes>
           <Route exact path="/register" element={<RegistrationPage />}></Route>
           <Route exact path="/login" element={<Loginpage />}></Route>

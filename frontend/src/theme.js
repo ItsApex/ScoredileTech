@@ -5,15 +5,15 @@ export const theme = createTheme({
     mode: "dark",
     primary: {
       main: "#329bca",
-      100: "#b9dfea", // Lightest shade of blue
-      200: "#92cadd",
-      300: "#6cb6d1",
-      400: "#4da9ce",
-      500: "#329bca", // Default shade of blue
-      600: "#2c8ebd",
-      700: "#227caa",
-      800: "#1b6c98",
-      900: "#034d79",
+      100: "#0678cf", // Lightest shade of blue
+      200: "#0e68ad",
+      300: "#0761a6",
+      400: "#08638a",
+      500: "#011F5E", // Default shade of blue
+      600: "#154c63",
+      700: "#0C1B2B",
+      800: "#061321",
+      900: "#030d17",
     },
     secondary: {
       main: "#204a81",
@@ -38,10 +38,9 @@ export const theme = createTheme({
       1000: "#BF360C", // Darkest shade of accent color
     },
     background: {
-      default: "#070f1a",
+      default: "#000F20",
       alt: "#227caa",
     },
-
     typography: {
       fontFamily: ["Inter", "sans-serif"].join(","),
       fontSize: 12,

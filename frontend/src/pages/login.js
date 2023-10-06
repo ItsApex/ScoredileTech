@@ -45,7 +45,6 @@ function Loginpage() {
       // Handle registration errors (e.g., validation errors, server errors)
       console.error("Error logining user:", error);
     }
-
   };
 
   return (
@@ -62,6 +61,7 @@ function Loginpage() {
       <Paper
         variant="outlined"
         sx={{
+          backgroundColor: "#030d17",
           py: 6,
           px: 5,
         }}
