@@ -12,8 +12,9 @@ import Loginpage from "./pages/login";
 import ResponsiveAppBar from "./components/appbar";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import LeafletMap from "./components/LeafletMap";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useTheme } from "@emotion/react";
+import Dialogue from "./components/dialogue";
 // import MenuIcon from '@mui/icons-material/Menu';
 
 function App() {
@@ -31,17 +32,26 @@ function App() {
       setLocationFetched(true);
     });
   }, []);
-  
-  
+
   return (
     <>
       <Router>
         <ResponsiveAppBar />
+
         <Routes>
           <Route exact path="/register" element={<RegistrationPage />}></Route>
           <Route exact path="/login" element={<Loginpage />}></Route>
           {locationFetched && (
-          <Route exact path="/map" element={<LeafletMap lat={currentLocation.lat} lng={currentLocation.lng} />}></Route>
+            <Route
+              exact
+              path="/map"
+              element={
+                <LeafletMap
+                  lat={currentLocation.lat}
+                  lng={currentLocation.lng}
+                />
+              }
+            ></Route>
           )}
         </Routes>
       </Router>

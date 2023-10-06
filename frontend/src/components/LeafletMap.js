@@ -14,7 +14,7 @@ import axios from "axios";
 // import HeatmapLayer from "react-leaflet-heatmap-layer";
 import { icon } from "leaflet";
 // import HeatmapLayer from "react-leaflet-heatmap-layer";
-
+import Sidebar from "../components/dialogue";
 const myLocationicon = icon({
   iconUrl: "man_pin.png",
   iconSize: [32, 32],
@@ -118,6 +118,8 @@ function LeafletMap({ lat, lng }) {
       >
         <AddIcon sx={{}} aria-label="add" />
       </Fab>
+      <Sidebar />
+
       <Dialog open={isDialogOpen} onClose={handleClose}>
         <DialogTitle>Dialog Title</DialogTitle>
         <DialogContent>
