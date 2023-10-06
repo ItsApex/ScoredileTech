@@ -30,6 +30,29 @@ router.post("/register", async (req, res) => {
   });
 
 
+  router.post("/login", async (req, res) => {
+    try {
+      const { username, password } = req.body;
+  
+      // Find the user by username and password (you should hash and salt passwords in a production app)
+      const user = await User.findOne({ username, password });
+  
+      if (!user) {
+        return res.status(401).json({ message: "Invalid username or password" });
+      }
+  
+      // You can generate a JWT token here for authentication if needed
+      // const token = generateToken(user);
+  
+      // Respond with a success message and token
+      res.status(200).json({ message: "Login successful", user /*, token */ });
+    } catch (error) {
+      console.error("Error logging in user:", error);
+      res.status(500).json({ message: "Login failed" });
+    }
+  });
+
+
 
   
 module.exports = router

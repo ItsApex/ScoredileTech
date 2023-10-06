@@ -5,6 +5,9 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/system"; // Import styled from @mui/system
 import { Paper } from "@mui/material";
+import { useNavigate } from 'react-router-dom';
+import axios from "axios";
+
 
 const CenteredContainer = styled(Container)({
   display: "flex",
@@ -32,6 +35,8 @@ const RegistrationPage = () => {
     phoneNumber: "",
   });
 
+  const navigate = useNavigate();
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
@@ -39,13 +44,12 @@ const RegistrationPage = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // Handle form submission logic here, e.g., sending data to the server.
-    console.log(formData);
+
     try {
-      // Send a POST request to the registration endpoint
-      // const response = await axios.post("/users/register", formData);
-      // Handle a successful registration (you can redirect the user or show a success message)
-      // console.log("Registration successful:", response.data);
+      console.log('try block')
+      const response = await axios.post("/users/register", formData);
+      navigate("/login");
+      console.log("Registration successful:", response.data);
     } catch (error) {
       // Handle registration errors (e.g., validation errors, server errors)
       console.error("Error registering user:", error);
