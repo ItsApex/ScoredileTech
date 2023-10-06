@@ -40,6 +40,7 @@ function Loginpage() {
       <Paper
         variant="outlined"
         sx={{
+          backgroundColor: "#030d17",
           py: 6,
           px: 5,
         }}
