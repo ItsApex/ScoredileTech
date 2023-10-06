@@ -13,14 +13,17 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
-
+import { useTheme } from '@mui/material/styles';  
 
 
 
 const pages = ['Products', 'Pricing', 'Blog', 'Alert'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout', 'Alert'];
 
+
 function ResponsiveAppBar() {
+
+  const theme = useTheme();
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [opendialog , setopen ] = useState(false)
