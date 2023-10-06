@@ -16,6 +16,8 @@ import DialogContentText from "@mui/material/DialogContentText";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import DialogActions from "@mui/material/DialogActions";
+import RouteSet from "./RouteSet";
+import axios from "axios";
 function SideBar(props) {
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [imdNowcastAlerts, setImdNowcastAlerts] = useState([]);
@@ -32,8 +34,27 @@ function SideBar(props) {
   };
 
   const handleCloseDialog = () => {
+
     setDialogOpen(false);
   };
+
+
+  const handleSubmit = async() =>{
+    setDialogOpen(false);
+    const userId = localStorage.getItem("userId");
+    const response = await axios.post("http://localhost:3001/event/createDisaster", {
+      'latitude' : formData.username,
+      'longitude' : formData.longitude,
+      'alertName' : formData.alertName,
+      'alertDescription' : formData.alertDescription,
+      'alertSeverity' : formData.alertSeverity,
+      'createdBy' : userId
+    })
+    
+
+   
+  }
+
   const handleFormChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -82,11 +103,7 @@ function SideBar(props) {
           </>
         ) : props.dialogtxt === "R" ? (
           // Different content to show when dialogtxt is "R"
-          <>
-            <Typography variant="h5">Another content for R</Typography>
-
-            <Button>Another button</Button>
-          </>
+          <RouteSet lat={props.lat} lng={props.lng} clikedloc={props.clikedloc}/>
         ) : null}
       </Paper>
 
@@ -117,6 +134,14 @@ function SideBar(props) {
             value={formData.alertName}
             onChange={handleFormChange}
           />
+           <TextField
+            name="alertDescription"
+            label="Alert Description"
+            fullWidth
+            margin="dense"
+            value={formData.alertDescription}
+            onChange={handleFormChange}
+          />
           <FormControl fullWidth margin="dense">
             <InputLabel>Alert Severity</InputLabel>
             <Select
@@ -134,7 +159,7 @@ function SideBar(props) {
           <Button onClick={handleCloseDialog} color="primary">
             Close
           </Button>
-          <Button onClick={handleCloseDialog} color="primary">
+          <Button onClick={handleSubmit} color="primary">
             Save
           </Button>
         </DialogActions>

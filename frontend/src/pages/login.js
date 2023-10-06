@@ -37,10 +37,17 @@ function Loginpage() {
       const response = await axios.post("http://localhost:3001/users/login", {
         'username' : formData.username,
         'password' : formData.password
-      });
+      })
+      .then(
+        (res)=>{
+          console.log( res.data.userId)
+          localStorage.setItem("userId", res.data.userId);
+        }
+      )
+      console.log(response)
 
-      navigate("/map");
-      console.log("logging successful:", response.data);
+      navigate("/home");
+      // console.log("logging successful:", response.data);
     } catch (error) {
       // Handle registration errors (e.g., validation errors, server errors)
       console.error("Error logining user:", error);
