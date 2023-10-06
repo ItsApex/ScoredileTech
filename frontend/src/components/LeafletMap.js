@@ -40,7 +40,7 @@ function LeafletMap({ lat, lng }) {
     <MapContainer
       center={coordinates}
       zoom={14}
-      style={{ height: '100vh', width: '100%' }}
+      style={{ height: '100vh', width: '100%' , position: 'absolute', top: '0', left: '0', zIndex: '-2' }}
     >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
