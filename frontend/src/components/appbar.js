@@ -174,18 +174,7 @@ function ResponsiveAppBar() {
             </Menu>
           </Box>
         </Toolbar>
-    <Dialog open={opendialog} >
-    <DialogTitle>Caution Alert</DialogTitle>
-    <DialogContent>
-      This is the content of the caution.
-      {/* You can add more content here */}
-    </DialogContent>
-    <DialogActions>
-      <Button onClick={setopen(false) } color="primary">
-        Close
-      </Button>
-    </DialogActions>
-  </Dialog>
+
       </Container>
     </AppBar>
   );
