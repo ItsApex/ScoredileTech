@@ -4,8 +4,9 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { Paper } from "@mui/material";
-import axios from 'axios'
-import { useNavigate } from 'react-router-dom';
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useTheme } from "@emotion/react";
 // import Snackbar from "@mui/material/Snackbar";
 // import MuiAlert from "@mui/material/Alert";
 
@@ -14,6 +15,8 @@ function Loginpage() {
     username: "",
     password: "",
   });
+
+  const theme = useTheme();
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
@@ -25,7 +28,7 @@ function Loginpage() {
     });
   };
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,18 +36,16 @@ function Loginpage() {
     console.log("Username:", formData.username);
     console.log("Password:", formData.password);
     try {
-      
-      const response = await axios.post("http://localhost:3001/users/login", {
-        'username' : formData.username,
-        'password' : formData.password
-      })
-      .then(
-        (res)=>{
-          console.log( res.data.userId)
+      const response = await axios
+        .post("http://localhost:3001/users/login", {
+          username: formData.username,
+          password: formData.password,
+        })
+        .then((res) => {
+          console.log(res.data.userId);
           localStorage.setItem("userId", res.data.userId);
-        }
-      )
-      console.log(response)
+        });
+      console.log(response);
 
       navigate("/home");
       // console.log("logging successful:", response.data);
@@ -66,9 +67,9 @@ function Loginpage() {
       }}
     >
       <Paper
-        variant="outlined"
+        elevation={8}
         sx={{
-          backgroundColor: "#030d17",
+          background: theme.palette.primary[700],
           py: 6,
           px: 5,
         }}

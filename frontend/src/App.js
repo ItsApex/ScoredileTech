@@ -15,6 +15,8 @@ import LeafletMap from "./components/LeafletMap";
 import { useState, useEffect } from "react";
 import { useTheme } from "@emotion/react";
 import Dialogue from "./components/dialogue";
+import Tooltip from "@mui/material/Tooltip";
+
 // import MenuIcon from '@mui/icons-material/Menu';
 
 function App() {
@@ -42,10 +44,30 @@ function App() {
           <Route exact path="/register" element={<RegistrationPage />}></Route>
           <Route exact path="/login" element={<Loginpage />}></Route>
           {locationFetched && (
-            <Route exact path="/home" element={<LeafletMap lat={currentLocation.lat} lng={currentLocation.lng} dialogtxt="H"/>}></Route>
+            <Route
+              exact
+              path="/home"
+              element={
+                <LeafletMap
+                  lat={currentLocation.lat}
+                  lng={currentLocation.lng}
+                  dialogtxt="H"
+                />
+              }
+            ></Route>
           )}
           {locationFetched && (
-            <Route exact path="/routes" element={<LeafletMap lat={currentLocation.lat} lng={currentLocation.lng} dialogtxt="R"/>}></Route>
+            <Route
+              exact
+              path="/routes"
+              element={
+                <LeafletMap
+                  lat={currentLocation.lat}
+                  lng={currentLocation.lng}
+                  dialogtxt="R"
+                />
+              }
+            ></Route>
           )}
         </Routes>
       </Router>

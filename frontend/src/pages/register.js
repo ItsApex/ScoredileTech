@@ -5,9 +5,9 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/system"; // Import styled from @mui/system
 import { Paper } from "@mui/material";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import { useTheme } from "@emotion/react";
 
 const CenteredContainer = styled(Container)({
   display: "flex",
@@ -36,7 +36,7 @@ const RegistrationPage = () => {
   });
 
   const navigate = useNavigate();
-
+  const theme = useTheme();
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
@@ -46,8 +46,11 @@ const RegistrationPage = () => {
     event.preventDefault();
 
     try {
-      console.log('try block')
-      const response = await axios.post("http://localhost:3001/users/register", formData);
+      console.log("try block");
+      const response = await axios.post(
+        "http://localhost:3001/users/register",
+        formData
+      );
       navigate("/login");
       console.log("Registration successful:", response.data);
     } catch (error) {
@@ -59,9 +62,9 @@ const RegistrationPage = () => {
   return (
     <CenteredContainer>
       <Paper
-        variant="outlined"
+        elevation={8}
         sx={{
-          
+          background: theme.palette.primary[700],
           py: 6,
           px: 5,
         }}

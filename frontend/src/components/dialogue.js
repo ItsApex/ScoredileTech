@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { useTheme } from "@emotion/react";
-import { Button } from "@mui/material";
+import { Avatar, Button, Card, CardContent, CardHeader } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import TextField from "@mui/material/TextField";
 import Select from "@mui/material/Select";
@@ -14,10 +14,14 @@ import DialogContent from "@mui/material/DialogContent";
 import MenuItem from "@mui/material/MenuItem";
 import DialogContentText from "@mui/material/DialogContentText";
 import Fab from "@mui/material/Fab";
-import AddIcon from "@mui/icons-material/Add";
+import ErrorOutline from "@mui/icons-material/ErrorOutline";
 import DialogActions from "@mui/material/DialogActions";
 import RouteSet from "./RouteSet";
 import axios from "axios";
+import Tooltip from "@mui/material/Tooltip";
+
+import { color } from "@mui/system";
+import { grey } from "@mui/material/colors";
 function SideBar(props) {
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [imdNowcastAlerts, setImdNowcastAlerts] = useState([]);
@@ -25,35 +29,106 @@ function SideBar(props) {
   const [formData, setFormData] = useState({
     latitude: props.lat,
     longitude: props.lng,
-    alertName: '',
-    alertDescription: '',
-    alertSeverity: '',
+    alertName: "",
+    alertDescription: "",
+    alertSeverity: "",
   });
   const handleFabClick = () => {
     setDialogOpen(true);
   };
 
   const handleCloseDialog = () => {
-
     setDialogOpen(false);
   };
 
+  const [locationData, setLocationData] = useState({
+    location: "",
+    temperature: "",
+  });
 
-  const handleSubmit = async() =>{
+  const avatars = [
+    { initials: "N", color: "accent", tooltip: "Call" },
+    { initials: "OP", color: "secondary", tooltip: "Call" },
+    { initials: "N", color: "primary", tooltip: "Call" },
+    { initials: "OP", color: "secondary", tooltip: "Call" },
+    { initials: "MM", color: "secondary", tooltip: "Call" },
+    { initials: "AR", color: "primary", tooltip: "Call" },
+    // Add more avatars as needed
+  ];
+  const blogPosts = [
+    {
+      heading: "Mumbai Rains: An Analysis of the 2023 Flooding",
+      url: "https://www.livemint.com/news/india/mumbai-rains-will-heavy-rainfall-play-a-spoilsport-in-dahi-handi-2023-celebrations-imd-janmashtami-2023downpour-11694060962392.html",
+    },
+    {
+      heading: "Climate Change and the Future of Mumbai",
+      url: " https://www.business-standard.com/article/current-affairs/climate-change-2050-why-mumbai-may-get-that-sinking-feeling-122111300289_1.html",
+    },
+    {
+      heading: "Mumbai's Coastal Communities at Risk from Sea-Level Rise",
+      url: "https://allthingsmumbai.com/is-mumbai-at-risk-of-sea-level-rise/",
+    },
+    {
+      heading: "Landslides in Mumbai: A Growing Threat",
+      url: "https://www.internetgeography.net/topics/what-challenges-have-been-caused-by-urban-growth-in-mumbai/",
+    },
+    {
+      heading:
+        "India has faced natural disaster every day in the last nine months",
+      url: "https://www.mid-day.com/mumbai/mumbai-news/article/prevention-symptoms-precautions-dos-and-donts-for-battling-heatwave-mumbai-imd-alert-india-23281783",
+    },
+    {
+      heading: "Natural Disasters and Extension & Advisory Services (EAS)",
+      url: "https://www.mid-day.com/mumbai/mumbai-news/article/prevention-symptoms-precautions-dos-and-donts-for-battling-heatwave-mumbai-imd-alert-india-23281783",
+    },
+    {
+      heading: "Mumbai's Heat Waves: A Warning Sign of Things to Come",
+      url: "https://www.mid-day.com/mumbai/mumbai-news/article/prevention-symptoms-precautions-dos-and-donts-for-battling-heatwave-mumbai-imd-alert-india-23281783",
+    },
+    // Add more blog posts as needed
+  ];
+
+  const handleSubmit = async () => {
     setDialogOpen(false);
     const userId = localStorage.getItem("userId");
-    const response = await axios.post("http://localhost:3001/event/createDisaster", {
-      'latitude' : formData.username,
-      'longitude' : formData.longitude,
-      'alertName' : formData.alertName,
-      'alertDescription' : formData.alertDescription,
-      'alertSeverity' : formData.alertSeverity,
-      'createdBy' : userId
-    })
-    
+    const response = await axios.post(
+      "http://localhost:3001/event/createDisaster",
+      {
+        latitude: formData.username,
+        longitude: formData.longitude,
+        alertName: formData.alertName,
+        alertDescription: formData.alertDescription,
+        alertSeverity: formData.alertSeverity,
+        createdBy: userId,
+      }
+    );
+  };
 
-   
-  }
+  useEffect(() => {
+    // Fetch location and temperature data when latitude and longitude change
+    async function fetchData() {
+      try {
+        const apiKey = "33945f9f3d8ff7414e18b0dacb516eb5";
+        const response = await axios.get(
+          `https://api.openweathermap.org/data/2.5/weather?lat=${props.lat}&lon=${props.lon}&appid=${apiKey}`
+        );
+        const data = response.data;
+
+        // Extract the location name and temperature from the API response
+        const locationName = data.name;
+        const temperature = data.main.temp;
+
+        setLocationData({
+          location: locationName,
+          temperature: temperature,
+        });
+      } catch (error) {
+        console.error("Error fetching location and temperature data:", error);
+      }
+    }
+
+    fetchData();
+  }, [props.lat, props.lng]);
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
@@ -74,18 +149,58 @@ function SideBar(props) {
           borderRadius: "20px",
           height: "85vh",
           margin: "1vh  0 0 2vw",
-          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          backgroundColor: "rgba(6, 19, 33, 0.75)",
           display: "flex",
           flexDirection: "column",
+          py: 4,
+          px: 1,
           alignItems: "center",
+          backdropFilter: "blur(5px)",
         }}
       >
         {props.dialogtxt === "H" ? (
           <>
-            <Typography variant="h5">Hey this is your sexy side bar</Typography>
+            <Typography
+              sx={{
+                fontSize: "1rem",
+                fontWeight: "bold",
+                color: grey[400],
+              }}
+            >
+              Location: Mumbai | Temperature: 29°C
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: "1rem",
+                fontWeight: "bold",
+                color: grey[400],
+              }}
+            >
+              Saturday, 7 October 2023
+            </Typography>
+            <Typography
+              sx={{
+                mt: 1.2,
+                mb: 0.5,
 
-            <Button>This is a button</Button>
+                fontSize: "1rem",
+                fontWeight: "bold",
+              }}
+            >
+              Family and Friends
+            </Typography>
+            <Box
+              sx={{
+                width: "90%",
+                mb: 1.2,
+                display: "flex",
+                flexWrap: "wrap", // Allow Avatars to wrap to the next row
 
+                justifyContent: "space-evenly",
+              }}
+            >
+              <AvatarList avatars={avatars} />
+            </Box>
             <Fab
               sx={{
                 position: "absolute",
@@ -98,13 +213,97 @@ function SideBar(props) {
               }}
               onClick={handleFabClick}
             >
-              <AddIcon sx={{}} aria-label="add" />
+              <ErrorOutline
+                fontSize="large"
+                sx={{
+                  width: "5rem",
+                }}
+                aria-label="add"
+              />
             </Fab>
           </>
         ) : props.dialogtxt === "R" ? (
           // Different content to show when dialogtxt is "R"
-          <RouteSet lat={props.lat} lng={props.lng} clikedloc={props.clikedloc}/>
+          <RouteSet
+            lat={props.lat}
+            lng={props.lng}
+            clikedloc={props.clikedloc}
+          />
         ) : null}
+
+        <Box
+          sx={{
+            height: "45vh",
+            width: "98%",
+            // borderRadius: "20px",
+            // border: "2px solid",
+            overflowY: "scroll",
+            "&::-webkit-scrollbar": {
+              width: "4px",
+              borderRadius: "20px",
+            },
+            "&::-webkit-scrollbar-track": {
+              background: theme.palette.primary[800],
+              borderRadius: "20px",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              background: theme.palette.primary[400],
+              borderRadius: "20px",
+            },
+          }}
+        >
+          {blogPosts.map((post, index) => (
+            <Card
+              key={index}
+              sx={{
+                my: 0.8,
+                height: "8vh",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                cursor: "pointer", // Add cursor pointer for clickability
+              }}
+            >
+              <a
+                style={{
+                  textDecoration: "none",
+                  color: "inherit",
+                }}
+                href={post.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {/* The target="_blank" and rel="noopener noreferrer" attributes open the link in a new tab */}
+                <CardHeader
+                  sx={{
+                    px: 1.3,
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                  avatar={
+                    <Avatar
+                      sx={{
+                        bgcolor: post.avatarColor,
+                        backgroundColor: theme.palette.primary[600],
+                      }}
+                    >
+                      {/* You can add initials or icons as needed */}
+                      {post.heading.charAt(0)}
+                    </Avatar>
+                  }
+                  title={
+                    <Typography sx={{ fontSize: 10 }} component="div">
+                      {post.heading}
+                    </Typography>
+                  }
+                />
+              </a>
+            </Card>
+          ))}
+        </Box>
       </Paper>
 
       <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
@@ -134,7 +333,7 @@ function SideBar(props) {
             value={formData.alertName}
             onChange={handleFormChange}
           />
-           <TextField
+          <TextField
             name="alertDescription"
             label="Alert Description"
             fullWidth
@@ -169,3 +368,34 @@ function SideBar(props) {
 }
 
 export default SideBar;
+
+function AvatarList({ avatars }) {
+  const theme = useTheme();
+
+  return (
+    <Box
+      sx={{
+        width: "80%",
+        mb: 1.2,
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: "space-evenly",
+      }}
+    >
+      {avatars.map((avatar, index) => (
+        <Tooltip title={avatar.tooltip} key={index}>
+          <Avatar
+            sx={{
+              bgcolor: theme.palette[avatar.color][500],
+              margin: 0.5,
+              width: 54,
+              height: 54,
+            }}
+          >
+            {avatar.initials}
+          </Avatar>
+        </Tooltip>
+      ))}
+    </Box>
+  );
+}
