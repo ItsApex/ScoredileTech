@@ -17,6 +17,7 @@ export const theme = createTheme({
     },
     secondary: {
       main: "#204a81",
+      300: "#5c7cad",
       400: "#4b6a99",
       500: "#27518a", // Default shade of gray
       600: "#204a81",

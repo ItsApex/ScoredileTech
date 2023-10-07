@@ -22,14 +22,12 @@ import Tooltip from "@mui/material/Tooltip";
 
 import { color } from "@mui/system";
 import { grey } from "@mui/material/colors";
-import CabinIcon from '@mui/icons-material/Cabin';   //state
-import FireTruckIcon from '@mui/icons-material/FireTruck'; // firebrigade
-import WomanIcon from '@mui/icons-material/Woman'; //girl help line
-import LocalHospitalIcon from '@mui/icons-material/LocalHospital';  //ambulance
-import LocalPoliceIcon from '@mui/icons-material/LocalPolice'; //police
-import FloodIcon from '@mui/icons-material/Flood'; //disaste
-
-
+import CabinIcon from "@mui/icons-material/Cabin"; //state
+import FireTruckIcon from "@mui/icons-material/FireTruck"; // firebrigade
+import WomanIcon from "@mui/icons-material/Woman"; //girl help line
+import LocalHospitalIcon from "@mui/icons-material/LocalHospital"; //ambulance
+import LocalPoliceIcon from "@mui/icons-material/LocalPolice"; //police
+import FloodIcon from "@mui/icons-material/Flood"; //disaste
 
 function SideBar(props) {
   const [isDialogOpen, setDialogOpen] = useState(false);
@@ -56,12 +54,16 @@ function SideBar(props) {
   });
 
   const avatars = [
-    { icon: <FloodIcon />,color: "primary",tooltip: "Disaster management authority"},
+    {
+      icon: <FloodIcon />,
+      color: "primary",
+      tooltip: "Disaster management authority",
+    },
     { icon: <LocalHospitalIcon />, color: "accent", tooltip: "Ambulence" },
     { icon: <FireTruckIcon />, color: "secondary", tooltip: "Fire Department" },
-    { icon: <LocalPoliceIcon />, color: "-", tooltip: "Police" },
+    { icon: <LocalPoliceIcon />, color: "accent", tooltip: "Police" },
     { icon: <CabinIcon />, color: "secondary", tooltip: "State Helpline" },
-    { icon: <WomanIcon />, color: "secondary", tooltip: "Women Helpline" },
+    { icon: <WomanIcon />, color: "primary", tooltip: "Women Helpline" },
     // Add more avatars as needed
   ];
   const blogPosts = [
@@ -198,36 +200,50 @@ function SideBar(props) {
               Helplines
             </Typography>
             <Box
-  sx={{
-    width: "90%",
-    display: "flex",
-    flexWrap: "wrap", // Allow Avatars to wrap to the next row
-    justifyContent: "space-evenly",
-    marginBottom: "1rem",
-  }}
->
-  {/* First row */}
-  <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%',margin:"0.5rem" }}>
-    {avatars.slice(0, 3).map((avatar, index) => (
-      <Tooltip title={avatar.tooltip} key={index}>
-        <Avatar sx={{ bgcolor: avatar.color }}>
-          {avatar.icon}
-        </Avatar>
-      </Tooltip>
-    ))}
-  </div>
-  
-  {/* Second row */}
-  <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%',margin:"0.5rem" }}>
-    {avatars.slice(3, 6).map((avatar, index) => (
-      <Tooltip title={avatar.tooltip} key={index}>
-        <Avatar sx={{ bgcolor: avatar.color }}>
-          {avatar.icon}
-        </Avatar>
-      </Tooltip>
-    ))}
-  </div>
-</Box>
+              sx={{
+                width: "90%",
+                display: "flex",
+                flexWrap: "wrap", // Allow Avatars to wrap to the next row
+                justifyContent: "space-evenly",
+                marginBottom: "1rem",
+              }}
+            >
+              {/* First row */}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  width: "100%",
+                  margin: "0.5rem",
+                }}
+              >
+                {avatars.slice(0, 3).map((avatar, index) => (
+                  <Tooltip title={avatar.tooltip} key={index}>
+                    <Avatar sx={{ bgcolor: theme.palette[avatar.color][300] }}>
+                      {avatar.icon}
+                    </Avatar>
+                  </Tooltip>
+                ))}
+              </div>
+
+              {/* Second row */}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  width: "100%",
+                  margin: "0.5rem",
+                }}
+              >
+                {avatars.slice(3, 6).map((avatar, index) => (
+                  <Tooltip title={avatar.tooltip} key={index}>
+                    <Avatar sx={{ bgcolor: theme.palette[avatar.color][400] }}>
+                      {avatar.icon}
+                    </Avatar>
+                  </Tooltip>
+                ))}
+              </div>
+            </Box>
 
             <Fab
               sx={{
