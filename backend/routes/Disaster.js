@@ -18,9 +18,9 @@ router.post('/createDisaster',async(req,res)=>{
         await newDisaster.save()
 // sending the message to the users 
 // uncomment this line during presentation
-        // await axios.post('http://localhost:3001/users/sendmessage', {
-        //      'message' : alertName
-        //     });
+        await axios.post('http://localhost:3001/users/sendmessage', {
+             'message' : alertName
+            });
 
         res.status(201).json({message : "disaster created successfully"})
     }
