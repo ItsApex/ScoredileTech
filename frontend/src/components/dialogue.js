@@ -351,7 +351,17 @@ function SideBar(props) {
         </Box>
       </Paper>
 
-      <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
+      <Dialog
+        open={isDialogOpen}
+        onClose={handleCloseDialog}
+        PaperProps={{
+          style: {
+            borderRadius: 20,
+            backgroundColor: theme.palette.primary[800],
+            boxShadow: "none",
+          },
+        }}
+      >
         <DialogTitle>Report an Event</DialogTitle>
         <DialogContent>
           <TextField
