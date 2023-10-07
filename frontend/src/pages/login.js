@@ -42,8 +42,8 @@ function Loginpage() {
           password: formData.password,
         })
         .then((res) => {
-          console.log(res.data.userId);
-          localStorage.setItem("userId", res.data.userId);
+          // console.log(res.data.userId);
+          // localStorage.setItem("userId", res.data.userId);
         });
       console.log(response);
 

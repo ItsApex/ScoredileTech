@@ -26,11 +26,11 @@ const disasterSchema = new mongoose.Schema({
     type: String,
     default: "Man-made", // Default to "Man-made" for the type field
   },
-  createdBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
+  // createdBy: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: "User",
+  //   required: true,
+  // },
 });
 
 const Disaster = mongoose.model("Disaster", disasterSchema);

@@ -90,16 +90,16 @@ function SideBar(props) {
 
   const handleSubmit = async () => {
     setDialogOpen(false);
-    const userId = localStorage.getItem("userId");
+    // const userId = localStorage.getItem("userId");
     const response = await axios.post(
       "http://localhost:3001/event/createDisaster",
       {
-        latitude: formData.username,
+        latitude: formData.latitude,
         longitude: formData.longitude,
         alertName: formData.alertName,
         alertDescription: formData.alertDescription,
         alertSeverity: formData.alertSeverity,
-        createdBy: userId,
+        
       }
     );
   };
@@ -307,9 +307,10 @@ function SideBar(props) {
       </Paper>
 
       <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
-        <DialogTitle>Dialog Title</DialogTitle>
+        <DialogTitle>Report an Event</DialogTitle>
         <DialogContent>
           <TextField
+            disabled
             name="latitude"
             label="Latitude"
             fullWidth
@@ -318,6 +319,7 @@ function SideBar(props) {
             onChange={handleFormChange}
           />
           <TextField
+            disabled
             name="longitude"
             label="Longitude"
             fullWidth

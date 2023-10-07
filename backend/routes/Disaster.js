@@ -5,21 +5,22 @@ const axios =  require('axios')
 
 router.post('/createDisaster',async(req,res)=>{
     try{
-        const {latitude,longitude,alertName,alertDescription,alertSeverity,createdBy} =  req.body;
+        const {latitude,longitude,alertName,alertDescription,alertSeverity} =  req.body;
         const newDisaster = new Disaster({
             latitude,
             longitude,
             alertName,
             alertDescription,
             alertSeverity,
-            createdBy
+  
         }) 
     
         await newDisaster.save()
 // sending the message to the users 
-        await axios.post('http://localhost:3001/users/sendmessage', {
-             'message' : alertName
-            });
+// uncomment this line during presentation
+        // await axios.post('http://localhost:3001/users/sendmessage', {
+        //      'message' : alertName
+        //     });
 
         res.status(201).json({message : "disaster created successfully"})
     }
