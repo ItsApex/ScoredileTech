@@ -42,10 +42,10 @@ const tempPloyline = [
   [72.817027, 19.205185],
 ];
 
-const filledYellowOptions = { color: 'yellow', fillColor: 'yellow' };
-const filledRedOptions = { color: 'red', fillColor: 'red' };
+const filledYellowOptions = { color: '#ffdd00', fillColor: '#ffdd00' };
+const filledRedOptions = { color: '#ff0000', fillColor: '#ff0000' };
 const filledGreenOptions = { color: 'green', fillColor: 'green' };
-const filledOrangeOptions = { color: 'orange', fillColor: 'orange' };
+const filledOrangeOptions = { color: '#ff9100', fillColor: '#ff9100' };
 
 const getColorOptions = (severity) => {
   switch (severity) {
@@ -57,6 +57,19 @@ const getColorOptions = (severity) => {
       return filledYellowOptions;
     default:
       return filledOrangeOptions;
+  }
+};
+
+const getRadius = (severity) => {
+  switch (severity) {
+    case 'Red alert':
+      return 1000;
+    case 'Orange alert':
+      return 800;
+    case 'Yellow alert':
+      return 500;
+    default:
+      return 0; // Set a default radius if needed
   }
 };
 
@@ -222,7 +235,7 @@ function LeafletMap({ lat, lng, dialogtxt }) {
               ]}
               // pathOptions={fillBlueOptions}
               pathOptions={getColorOptions(disaster.alertSeverity)}
-              radius={1000}
+              radius={getRadius(disaster.alertSeverity)}
             >
               <Popup>
                 <strong>{disaster.alertName}</strong>
