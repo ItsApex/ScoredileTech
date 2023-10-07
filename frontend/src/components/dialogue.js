@@ -405,7 +405,7 @@ function SideBar(props) {
               value={formData.alertSeverity}
               onChange={handleFormChange}
             >
-              <MenuItem value="Green alert">Green alert</MenuItem>
+              <MenuItem value="Yellow alert">Yellow alert</MenuItem>
               <MenuItem value="Orange alert">Orange alert</MenuItem>
               <MenuItem value="Red alert">Red alert</MenuItem>
             </Select>
