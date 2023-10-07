@@ -12,6 +12,7 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
+import AccountCircle from '@mui/icons-material/AccountCircle';
 import { Link, Routes, Route, useNavigate } from "react-router-dom";
 import {
   Dialog,
@@ -172,9 +173,16 @@ function ResponsiveAppBar() {
 
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open Profile">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                </IconButton>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+               
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
               </Tooltip>
             </Box>
           </Toolbar>

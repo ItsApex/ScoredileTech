@@ -317,6 +317,7 @@ function SideBar(props) {
             margin="dense"
             value={formData.latitude}
             onChange={handleFormChange}
+            
           />
           <TextField
             disabled
@@ -326,6 +327,7 @@ function SideBar(props) {
             margin="dense"
             value={formData.longitude}
             onChange={handleFormChange}
+            
           />
           <TextField
             name="alertName"
