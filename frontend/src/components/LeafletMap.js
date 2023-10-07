@@ -41,7 +41,25 @@ const tempPloyline = [
   [72.816789, 19.204936],
   [72.817027, 19.205185],
 ];
-const purpleOptions = { color: "purple" };
+
+const filledYellowOptions = { color: 'yellow', fillColor: 'yellow' };
+const filledRedOptions = { color: 'red', fillColor: 'red' };
+const filledGreenOptions = { color: 'green', fillColor: 'green' };
+const filledOrangeOptions = { color: 'orange', fillColor: 'orange' };
+
+const getColorOptions = (severity) => {
+  switch (severity) {
+    case 'Red alert':
+      return filledRedOptions;
+    case 'Orange alert':
+      return filledOrangeOptions;
+    case 'Yellow alert':
+      return filledYellowOptions;
+    default:
+      return filledOrangeOptions;
+  }
+};
+
 const fillBlueOptions = { fillColor: "blue" };
 const center = [72.816449, 19.205002];
 
@@ -171,7 +189,7 @@ function LeafletMap({ lat, lng, dialogtxt }) {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
-        <Circle center={center} pathOptions={fillBlueOptions} radius={200} />
+        {/* <Circle center={center} pathOptions={fillBlueOptions} radius={200} /> */}
         <Marker position={[lat, lng]} icon={myLocationicon}>
           <Popup>Your Current Location</Popup>
         </Marker>
@@ -202,7 +220,8 @@ function LeafletMap({ lat, lng, dialogtxt }) {
                 parseFloat(disaster.latitude),
                 parseFloat(disaster.longitude),
               ]}
-              pathOptions={fillBlueOptions}
+              // pathOptions={fillBlueOptions}
+              pathOptions={getColorOptions(disaster.alertSeverity)}
               radius={1000}
             >
               <Popup>
