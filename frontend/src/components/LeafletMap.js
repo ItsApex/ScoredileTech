@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { MapContainer, TileLayer, Marker, Popup, Polyline, Circle, LayersControl} from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, Polyline, Circle} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import axios from "axios";
 import { icon } from "leaflet";
@@ -147,36 +147,34 @@ function LeafletMap({ lat, lng, dialogtxt }) {
           zIndex: -5,
         }}
       >
-        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' />
-        <LayersControl position="bottomright"></LayersControl>
-          <LayersControl.Overlay name="NDMA Disaster Alerts">
-          {alerts.map((alert, index) => (
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        />
+        <Circle center={center} pathOptions={fillBlueOptions} radius={200} />
+        <Marker position={[lat, lng]} icon={myLocationicon}>
+          <Popup>Your Current Location</Popup>
+        </Marker>
+
+        {alerts.map((alert, index) => (
           
-            <Marker
+          <Marker
             icon={disasterIcon}
             key={index}
             position={[
               parseFloat(alert.centroid.split(",")[1]),
               parseFloat(alert.centroid.split(",")[0]),
             ]}
-            >
-              <Popup>
-                <strong>{alert.disaster_type}</strong>
-                <br />
-                Severity: {alert.severity}
-                <br />
-                Location: {alert.area_description}
-              </Popup>
-            </Marker>
-            ))}
-          </LayersControl.Overlay>
-        
-        {/* <Circle center={center} pathOptions={fillBlueOptions} radius={200} /> */}
-        <Marker position={[lat, lng]} icon={myLocationicon}>
-          <Popup>Your Current Location</Popup>
-        </Marker>
-
-        
+          >
+            <Popup>
+              <strong>{alert.disaster_type}</strong>
+              <br />
+              Severity: {alert.severity}
+              <br />
+              Location: {alert.area_description}
+            </Popup>
+          </Marker>
+        ))}
 
 
 
