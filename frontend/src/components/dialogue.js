@@ -47,12 +47,16 @@ function SideBar(props) {
   });
 
   const avatars = [
-    { initials: "N", color: "accent", tooltip: "Call" },
-    { initials: "OP", color: "secondary", tooltip: "Call" },
-    { initials: "N", color: "primary", tooltip: "Call" },
-    { initials: "OP", color: "secondary", tooltip: "Call" },
-    { initials: "MM", color: "secondary", tooltip: "Call" },
-    { initials: "AR", color: "primary", tooltip: "Call" },
+    {
+      initials: "D",
+      color: "primary",
+      tooltip: "Disaster management authority",
+    },
+    { initials: "A", color: "accent", tooltip: "Ambulence" },
+    { initials: "F", color: "secondary", tooltip: "Fire Department" },
+    { initials: "P", color: "primary", tooltip: "Police" },
+    { initials: "S", color: "secondary", tooltip: "State Helpline" },
+    { initials: "W", color: "secondary", tooltip: "Women Helpline" },
     // Add more avatars as needed
   ];
   const blogPosts = [
@@ -99,7 +103,6 @@ function SideBar(props) {
         alertName: formData.alertName,
         alertDescription: formData.alertDescription,
         alertSeverity: formData.alertSeverity,
-        
       }
     );
   };
@@ -187,12 +190,11 @@ function SideBar(props) {
                 fontWeight: "bold",
               }}
             >
-              Family and Friends
+              Helplines
             </Typography>
             <Box
               sx={{
                 width: "90%",
-                mb: 1.2,
                 display: "flex",
                 flexWrap: "wrap", // Allow Avatars to wrap to the next row
 
@@ -235,6 +237,7 @@ function SideBar(props) {
           sx={{
             height: "45vh",
             width: "98%",
+            marginTop: "1vh",
             // borderRadius: "20px",
             // border: "2px solid",
             overflowY: "scroll",
@@ -317,7 +320,6 @@ function SideBar(props) {
             margin="dense"
             value={formData.latitude}
             onChange={handleFormChange}
-            
           />
           <TextField
             disabled
@@ -327,7 +329,6 @@ function SideBar(props) {
             margin="dense"
             value={formData.longitude}
             onChange={handleFormChange}
-            
           />
           <TextField
             name="alertName"
