@@ -5,12 +5,14 @@ const cors = require("cors");
 const PORT = process.env.PORT || 3001;
 const mongoose = require("mongoose");
 const userRoutes = require("./routes/Userroute");
+const disasterRoutes =  require('./routes/Disaster')
 require("dotenv").config();
 
 // middlewares
 app.use(cors());
 app.use(express.json());
 app.use("/users", userRoutes);
+app.use("/event", disasterRoutes);
 
 const db = async () => {
   console.log("db");

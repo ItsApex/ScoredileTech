@@ -1,22 +1,26 @@
 const mongoose = require("mongoose");
-const User = require('/models/user'); // Import the User model
+const User = require('./users'); // Import the User model
 
 const disasterSchema = new mongoose.Schema({
   latitude: {
     type: Number,
-    required: true,
+    // required: true,
   },
   longitude: {
     type: Number,
-    required: true,
+    // required: true,
   },
   alertName: {
     type: String,
-    required: true,
+    // required: true,
+  },
+  alertDescription :{
+    type : String,
+    // required : true
   },
   alertSeverity: {
     type: String,
-    required: true,
+    // required: true,
   },
   type: {
     type: String,

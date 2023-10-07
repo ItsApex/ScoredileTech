@@ -6,24 +6,41 @@ const authToken = 'a8b10e8acbac965c182251c4b232c1b8';
 const client = require('twilio')(accountSid, authToken);
 
 router.post("/sendmessage", async (req, res) => {
-  const numbers = ['+919324284054','+918591537048','+917977255640']
-try{
-  const {message} = req.body
-  numbers.forEach((number)=>{
-    client.messages
-    .create({
-        body: message,
-        from: '+12564742235',
-        to: number
-    })
-  })
+  const numbers = ['+919324284054', '+918591537048', '+917373737373','+917977255640'];
+  const { message } = req.body;
 
-  console.log('All messages sent successfully.');
-    res.status(200).json({ message: "Messages sent successfully" });
-}
-catch(error){
-  res.status(500).json({ error: "Message sending failed", error });
-}
+  try {
+    const successfulNumbers = [];
+    const failedNumbers = [];
+
+    for (const number of numbers) {
+      try {
+        await client.messages.create({
+          body: message,
+          from: '+12564742235',
+          to: number,
+        });
+        successfulNumbers.push(number);
+      } catch (error) {
+        console.error(`Error sending message to ${number}:`, error);
+        failedNumbers.push(number);
+      }
+    }
+
+    console.log('Messages sent successfully to:', successfulNumbers);
+    console.log('Messages failed to send to:', failedNumbers);
+
+    res.status(200).json({
+      message: "Messages sent successfully",
+      successfulNumbers,
+      failedNumbers,
+    });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: "Message sending failed", error });
+  }
+});
+
 
 
   
@@ -37,7 +54,7 @@ catch(error){
     //   console.error('There was an error:', err);
     //   res.status(500).json({ error: "Message sending failed",err });
     // });
-});
+// });
 
 router.post("/register", async (req, res) => {
     try {
@@ -78,12 +95,12 @@ router.post("/register", async (req, res) => {
       if (!user) {
         return res.status(401).json({ message: "Invalid username or password" });
       }
-  
+      
       // You can generate a JWT token here for authentication if needed
       // const token = generateToken(user);
   
       // Respond with a success message and token
-      res.status(200).json({ message: "Login successful", user /*, token */ });
+      res.status(200).json({ message: "Login successful", user , userId: user._id });
     } catch (error) {
       console.error("Error logging in user:", error);
       res.status(500).json({ message: "Login failed" });

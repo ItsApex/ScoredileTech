@@ -259,7 +259,7 @@ function SideBar(props) {
                 my: 0.8,
                 height: "8vh",
                 display: "flex",
-                justifyContent: "center",
+                justifyContent: "left",
                 alignItems: "center",
                 cursor: "pointer", // Add cursor pointer for clickability
               }}
