@@ -351,7 +351,17 @@ function SideBar(props) {
         </Box>
       </Paper>
 
-      <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
+      <Dialog
+        open={isDialogOpen}
+        onClose={handleCloseDialog}
+        PaperProps={{
+          style: {
+            borderRadius: 20,
+            backgroundColor: theme.palette.primary[800],
+            boxShadow: "none",
+          },
+        }}
+      >
         <DialogTitle>Report an Event</DialogTitle>
         <DialogContent>
           <TextField
@@ -395,7 +405,7 @@ function SideBar(props) {
               value={formData.alertSeverity}
               onChange={handleFormChange}
             >
-              <MenuItem value="Green alert">Green alert</MenuItem>
+              <MenuItem value="Yellow alert">Yellow alert</MenuItem>
               <MenuItem value="Orange alert">Orange alert</MenuItem>
               <MenuItem value="Red alert">Red alert</MenuItem>
             </Select>
