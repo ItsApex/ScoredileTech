@@ -207,7 +207,7 @@ function SideBar(props) {
   }}
 >
   {/* First row */}
-  <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+  <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%',margin:"0.5rem" }}>
     {avatars.slice(0, 3).map((avatar, index) => (
       <Tooltip title={avatar.tooltip} key={index}>
         <Avatar sx={{ bgcolor: avatar.color }}>
@@ -216,9 +216,9 @@ function SideBar(props) {
       </Tooltip>
     ))}
   </div>
- 
+  
   {/* Second row */}
-  <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+  <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%',margin:"0.5rem" }}>
     {avatars.slice(3, 6).map((avatar, index) => (
       <Tooltip title={avatar.tooltip} key={index}>
         <Avatar sx={{ bgcolor: avatar.color }}>
